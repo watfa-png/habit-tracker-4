@@ -1,0 +1,203 @@
+/* ============================================
+   Habit Tracker - Dark Mode Styles
+   ============================================ */
+
+/* Dark Mode Theme */
+[data-theme="dark"] {
+    --primary: #8B85FF;
+    --primary-dark: #6C63FF;
+    --primary-light: #A5A0FF;
+    --success: #4ADE80;
+    --warning: #FDE047;
+    --danger: #F87171;
+    --background: #0F172A;
+    --surface: #1E293B;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --border: #334155;
+}
+
+/* Dark Mode Specific Overrides */
+[data-theme="dark"] .sidebar {
+    background: #1E293B;
+    border-left-color: #334155;
+}
+
+[dir="ltr"][data-theme="dark"] .sidebar {
+    border-left-color: transparent;
+    border-right-color: #334155;
+}
+
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .chart-card,
+[data-theme="dark"] .habits-section,
+[data-theme="dark"] .calendar-section,
+[data-theme="dark"] .heatmap-section,
+[data-theme="dark"] .day-details,
+[data-theme="dark"] .settings-section,
+[data-theme="dark"] .users-section {
+    background: #1E293B;
+}
+
+[data-theme="dark"] .habit-item {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .habit-item:hover {
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .calendar-day {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .calendar-day:hover {
+    background: #334155;
+}
+
+[data-theme="dark"] .calendar-day.empty:hover {
+    background: transparent;
+}
+
+[data-theme="dark"] .heatmap-cell {
+    background: #334155;
+}
+
+[data-theme="dark"] .heatmap-cell.level-1 {
+    background: rgba(74, 222, 128, 0.25);
+}
+
+[data-theme="dark"] .heatmap-cell.level-2 {
+    background: rgba(74, 222, 128, 0.5);
+}
+
+[data-theme="dark"] .heatmap-cell.level-3 {
+    background: rgba(74, 222, 128, 0.75);
+}
+
+[data-theme="dark"] .heatmap-cell.level-4 {
+    background: var(--success);
+}
+
+[data-theme="dark"] .legend-colors .color-0 {
+    background: #334155;
+}
+
+[data-theme="dark"] .setting-item {
+    border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .users-table thead {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .users-table tbody tr:hover {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .users-table td {
+    border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .users-table th {
+    border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .login-card {
+    background: rgba(30, 41, 59, 0.95);
+}
+
+[data-theme="dark"] .login-footer {
+    border-top-color: #334155;
+}
+
+[data-theme="dark"] .input-wrapper input,
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .search-box input,
+[data-theme="dark"] .filter-select,
+[data-theme="dark"] .setting-select,
+[data-theme="dark"] .time-filter {
+    background: #0F172A;
+    border-color: #334155;
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .input-wrapper input:focus,
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group textarea:focus,
+[data-theme="dark"] .form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(139, 133, 255, 0.1);
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: #0F172A;
+    border-color: #334155;
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: #334155;
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .nav-link:hover {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .dark-mode-toggle {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .sidebar-footer {
+    border-top-color: #334155;
+}
+
+[data-theme="dark"] .settings-section h2 {
+    border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .setting-info i {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .user-action-btn,
+[data-theme="dark"] .habit-action-btn,
+[data-theme="dark"] .action-btn {
+    background: #0F172A;
+}
+
+[data-theme="dark"] .icon-btn {
+    background: #0F172A;
+    border-color: #334155;
+}
+
+[data-theme="dark"] .icon-btn:hover,
+[data-theme="dark"] .icon-btn.selected {
+    background: rgba(139, 133, 255, 0.1);
+}
+
+[data-theme="dark"] .calendar-day-header {
+    color: var(--text-secondary);
+}
+
+/* Dark Mode Transitions */
+[data-theme="dark"] * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark Mode Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #0F172A;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}

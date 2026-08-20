@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقويم - Watfa Habit Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Watfa Habit Tracker</span>
+                </div>
+                <p data-translate="tagline">تتبع عاداتك اليومية</p>
+            </div>
+            
+            <button class="add-habit-btn" id="addHabitBtn">
+                <i class="fas fa-plus"></i>
+                <span data-translate="add_habit">إضافة عادة جديدة</span>
+            </button>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span data-translate="dashboard">لوحة التحكم</span>
+                </a>
+                <a href="calendar.html" class="nav-link active">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span data-translate="calendar">التقويم</span>
+                </a>
+                <a href="statistics.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span data-translate="statistics">الإحصائيات</span>
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span data-translate="settings">الإعدادات</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="dark-mode-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span data-translate="dark_mode">الوضع الداكن</span>
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="welcome-section">
+                    <h1 data-translate="calendar">التقويم</h1>
+                    <p class="welcome-message" data-translate="calendar_subtitle">عرض نشاطك اليومي والشهري</p>
+                </div>
+                <div class="date-section">
+                    <i class="fas fa-calendar"></i>
+                    <span id="currentDate"></span>
+                    <span id="currentDay"></span>
+                </div>
+                <div class="top-bar-actions">
+                    <button class="lang-toggle-btn" id="langToggle">
+                        <i class="fas fa-globe"></i>
+                        <span>English</span>
+                    </button>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Calendar View -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <button class="nav-btn" id="prevMonth">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <h2 id="calendarTitle"></h2>
+                    <button class="nav-btn" id="nextMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-day-header" data-translate="saturday">السبت</div>
+                    <div class="calendar-day-header" data-translate="sunday">الأحد</div>
+                    <div class="calendar-day-header" data-translate="monday">الإثنين</div>
+                    <div class="calendar-day-header" data-translate="tuesday">الثلاثاء</div>
+                    <div class="calendar-day-header" data-translate="wednesday">الأربعاء</div>
+                    <div class="calendar-day-header" data-translate="thursday">الخميس</div>
+                    <div class="calendar-day-header" data-translate="friday">الجمعة</div>
+                </div>
+                
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar days will be rendered here -->
+                </div>
+            </div>
+            
+            <!-- Activity Heatmap -->
+            <div class="heatmap-section">
+                <h3 data-translate="activity_heatmap">خريطة النشاط</h3>
+                <div class="heatmap-container" id="activityHeatmap">
+                    <!-- Heatmap will be rendered here -->
+                </div>
+                <div class="heatmap-legend">
+                    <span data-translate="less">أقل</span>
+                    <div class="legend-colors">
+                        <span class="color-0"></span>
+                        <span class="color-1"></span>
+                        <span class="color-2"></span>
+                        <span class="color-3"></span>
+                        <span class="color-4"></span>
+                    </div>
+                    <span data-translate="more">أكثر</span>
+                </div>
+            </div>
+            
+            <!-- Day Details -->
+            <div class="day-details" id="dayDetails">
+                <h3 data-translate="day_details">تفاصيل اليوم</h3>
+                <div class="day-info">
+                    <p><strong data-translate="selected_date">التاريخ المحدد:</strong> <span id="selectedDate"></span></p>
+                    <p><strong data-translate="completion_rate">نسبة الإنجاز:</strong> <span id="dayCompletionRate">0%</span></p>
+                </div>
+                <div class="day-habits" id="dayHabits">
+                    <!-- Day habits will be rendered here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Events Modal -->
+    <div class="modal" id="eventsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="eventsModalTitle">أحداث اليوم</h2>
+                <button class="close-btn" id="closeEventsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="events-list" id="eventsList">
+                    <!-- Events will be rendered here -->
+                </div>
+                <button class="btn btn-primary add-event-btn" id="addEventBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة حدث جديد</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Form Modal -->
+    <div class="modal" id="eventFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="eventFormTitle">إضافة حدث</h2>
+                <button class="close-btn" id="closeEventFormModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="eventForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="eventTitle">العنوان</label>
+                        <input type="text" id="eventTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">الوصف</label>
+                        <textarea id="eventDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventTime">الوقت</label>
+                        <input type="time" id="eventTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventType">النوع</label>
+                        <select id="eventType">
+                            <option value="reminder">تذكير</option>
+                            <option value="event">حدث</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelEventForm">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Motivational Quote Modal -->
+    <div class="motivational-modal" id="motivationalModal">
+        <div class="motivational-overlay"></div>
+        <div class="motivational-content">
+            <div class="motivational-icon">
+                <i class="fas fa-quote-left"></i>
+            </div>
+            <p class="motivational-quote" id="motivationalQuote"></p>
+            <button class="motivational-continue-btn" id="motivationalContinueBtn">
+                <span data-translate="motivational_continue">متابعة</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/habits.js"></script>
+    <script src="js/statistics.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/init.js"></script>
+</body>
+</html>

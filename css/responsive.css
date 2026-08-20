@@ -1,0 +1,248 @@
+/* ============================================
+   Habit Tracker - Responsive Styles
+   ============================================ */
+
+/* Large Tablets and Small Desktops */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .main-content {
+        margin-right: 240px;
+    }
+    
+    [dir="ltr"] .main-content {
+        margin-right: 0;
+        margin-left: 240px;
+    }
+    
+    .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-card.full-width {
+        grid-column: 1;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(100%);
+        width: 280px;
+    }
+    
+    [dir="ltr"] .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-right: 0;
+        margin-left: 0;
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+    }
+    
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .date-section {
+        order: 3;
+    }
+    
+    .top-bar-actions {
+        width: 100%;
+        justify-content: space-between;
+        order: 2;
+    }
+    
+    .habits-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .habits-actions {
+        width: 100%;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        padding: 24px;
+        margin: 16px;
+    }
+    
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .users-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .users-actions {
+        width: 100%;
+    }
+    
+    .users-table {
+        font-size: 0.9rem;
+    }
+    
+    .users-table th,
+    .users-table td {
+        padding: 12px 8px;
+    }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 16px;
+    }
+    
+    .welcome-section h1 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 16px;
+    }
+    
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .chart-card {
+        padding: 16px;
+    }
+    
+    .chart-body {
+        height: 250px;
+    }
+    
+    .habit-item {
+        flex-wrap: wrap;
+    }
+    
+    .habit-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .login-card {
+        padding: 32px 24px;
+        margin: 16px;
+    }
+    
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .users-table {
+        font-size: 0.85rem;
+    }
+    
+    .user-actions-cell {
+        flex-wrap: wrap;
+    }
+    
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .export-buttons {
+        width: 100%;
+    }
+    
+    .export-buttons .btn {
+        flex: 1;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    .login-card {
+        padding: 24px;
+        max-width: 500px;
+    }
+    
+    .login-header {
+        margin-bottom: 24px;
+    }
+    
+    .login-header .logo {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sidebar,
+    .top-bar-actions,
+    .mobile-menu-btn,
+    .habit-actions,
+    .add-habit-btn,
+    .logout-btn {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin: 0 !important;
+        padding: 20px !important;
+    }
+    
+    .dashboard-container {
+        display: block !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .stat-card,
+    .chart-card,
+    .habits-section {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+    }
+}

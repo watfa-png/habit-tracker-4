@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watfa Habit Tracker - ابنِ عادات أفضل</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing-container">
+        <div class="landing-content">
+            <div class="landing-hero">
+                <div class="logo-section">
+                    <i class="fas fa-check-circle"></i>
+                    <h1>Watfa Habit Tracker</h1>
+                    <p data-translate="tagline">تتبع عاداتك اليومية</p>
+                </div>
+                <h2 data-translate="hero_title">ابنِ عادات أفضل، حياة أفضل</h2>
+                <p data-translate="hero_subtitle">متعقب عادات مفتوح المصدر، محلي أولاً، يحفظ بياناتك على جهازك مع إحصائيات ونظام تحفيزي</p>
+                <div class="cta-buttons">
+                    <a href="dashboard.html" class="btn btn-primary" data-translate="login_btn">ابدأ الآن</a>
+                    <a href="#features" class="btn btn-secondary" data-translate="learn_more">تعرف على المزيد</a>
+                </div>
+            </div>
+            
+            <div class="features-section" id="features">
+                <h3 data-translate="features_title">المميزات الرئيسية</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h4 data-translate="feature1_title">إحصائيات متقدمة</h4>
+                        <p data-translate="feature1_desc">تتبع تقدمك مع رسوم بيانية تفاعلية وإحصائيات مفصلة</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-fire"></i>
+                        <h4 data-translate="feature2_title">نظام السلاسل</h4>
+                        <p data-translate="feature2_desc">حافظ على سلسلة إنجازاتك وحقق أطول سلسلة ممكنة</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-trophy"></i>
+                        <h4 data-translate="feature3_title">نظام المستويات</h4>
+                        <p data-translate="feature3_desc">اكسب نقاط XP مع كل إنجاز وتقدم في المستويات</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h4 data-translate="feature4_title">تقويم تفاعلي</h4>
+                        <p data-translate="feature4_desc">عرض نشاطك اليومي مع خريطة حرارية مثل GitHub</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-bell"></i>
+                        <h4 data-translate="feature5_title">جدولة مرنة</h4>
+                        <p data-translate="feature5_desc">أضف وقتًا تفضيليًا لكل عادة ونظّم خطتك اليومية بوضوح</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-moon"></i>
+                        <h4 data-translate="feature6_title">الوضع الداكن</h4>
+                        <p data-translate="feature6_desc">تصميم عصري مع دعم كامل للوضع الداكن والفاتح</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="language-toggle">
+            <button id="langToggle" class="lang-btn">
+                <i class="fas fa-globe"></i>
+                <span>English</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/init.js"></script>
+</body>
+</html>
