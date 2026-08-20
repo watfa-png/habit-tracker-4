@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.1 - 2026-08-20
+
+### Fixed
+- Replaced the reload-based language cycle with direct العربية, Türkçe, and English selectors on every page.
+- Applied the persisted locale before first paint and refresh dynamic habits, events, dates, statistics, charts, dialogs, and accessible labels immediately when the language changes.
+- Localized CSV values, heatmap tooltips, calendar-day summaries, default-profile display text, and icon/action labels.
+- Added runtime locale, direction, persistence, selector, and required-key coverage to the smoke tests.
+
 ## 2.1.0 - 2026-08-20
 
 ### Added

@@ -12,3 +12,7 @@ coverage/
 *.docx
 *.xlsx
 *.pdf
+.chrome-test-*
+.headless-profile*
+.headless-shell-test
+.watfa-chrome-*

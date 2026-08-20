@@ -628,13 +628,22 @@ const Habits = {
 
         
 
-        container.innerHTML = habits.map(habit => `
+        container.innerHTML = habits.map(habit => {
+            const isCompleted = this.isCompletedToday(habit.id);
+            const completionLabel = Translations.format(
+                isCompleted ? 'uncomplete_habit_aria' : 'complete_habit_aria',
+                { name: habit.name }
+            );
+            const editLabel = Translations.format('edit_habit_aria', { name: habit.name });
+            const deleteLabel = Translations.format('delete_habit_aria', { name: habit.name });
 
-            <div class="habit-item ${this.isCompletedToday(habit.id) ? 'completed' : ''}" data-id="${habit.id}">
+            return `
 
-                <div class="habit-checkbox ${this.isCompletedToday(habit.id) ? 'checked' : ''}" onclick="Habits.complete('${habit.id}')">
+            <div class="habit-item ${isCompleted ? 'completed' : ''}" data-id="${habit.id}">
 
-                    ${this.isCompletedToday(habit.id) ? '<i class="fas fa-check"></i>' : ''}
+                <div aria-label="${AppUtils.escapeHtml(completionLabel)}" class="habit-checkbox ${isCompleted ? 'checked' : ''}" onclick="Habits.complete('${habit.id}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); Habits.complete('${habit.id}'); }" role="button" tabindex="0">
+
+                    ${isCompleted ? '<i class="fas fa-check"></i>' : ''}
 
                 </div>
 
@@ -666,13 +675,13 @@ const Habits = {
 
                 <div class="habit-actions">
 
-                    <button class="habit-action-btn" onclick="Habits.edit('${habit.id}')">
+                    <button aria-label="${AppUtils.escapeHtml(editLabel)}" class="habit-action-btn" onclick="Habits.edit('${habit.id}')" type="button">
 
                         <i class="fas fa-edit"></i>
 
                     </button>
 
-                    <button class="habit-action-btn delete" onclick="Habits.delete('${habit.id}')">
+                    <button aria-label="${AppUtils.escapeHtml(deleteLabel)}" class="habit-action-btn delete" onclick="Habits.delete('${habit.id}')" type="button">
 
                         <i class="fas fa-trash"></i>
 
@@ -682,7 +691,8 @@ const Habits = {
 
             </div>
 
-        `).join('');
+        `;
+        }).join('');
 
     },
 
@@ -1029,4 +1039,3 @@ const Habits = {
     }
 
 };
-

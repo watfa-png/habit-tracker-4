@@ -382,9 +382,12 @@ input:checked + .slider:before {
     color: var(--danger);
 }
 
-/* Language Toggle */
-.lang-toggle-btn,
-.lang-btn {
+html.i18n-pending body {
+    visibility: hidden;
+}
+
+/* Language selector */
+.language-select-wrap {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -398,10 +401,26 @@ input:checked + .slider:before {
     font-family: 'Cairo', sans-serif;
 }
 
-.lang-toggle-btn:hover,
-.lang-btn:hover {
+.language-select-wrap:focus-within,
+.language-select-wrap:hover {
     border-color: var(--primary);
     color: var(--primary);
+}
+
+.language-select {
+    min-width: 92px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+}
+
+.language-select option {
+    background: var(--surface);
+    color: var(--text-primary);
 }
 
 /* Utility Classes */

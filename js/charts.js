@@ -367,7 +367,10 @@ const Charts = {
         }
 
         const dailyData = Statistics.getDailyCompletionData(days);
-        const labels = dailyData.map(d => d.day);
+        const labels = dailyData.map(d => AppUtils.localDateFromKey(d.date).toLocaleDateString(
+            Translations.locale(),
+            { day: 'numeric', month: 'short' }
+        ));
         const data = dailyData.map(d => d.completionRate);
 
         this.charts.monthlyProgress = new Chart(ctx, {
@@ -568,7 +571,16 @@ const Charts = {
         
         let html = '';
         heatmapData.forEach(data => {
-            html += `<div class="heatmap-cell level-${data.level}" title="${data.date}: ${data.completionCount} ${Translations.get('completions')}"></div>`;
+            const localizedDate = AppUtils.localDateFromKey(data.date).toLocaleDateString(Translations.locale(), {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const tooltip = Translations.format('heatmap_tooltip', {
+                date: localizedDate,
+                count: data.completionCount
+            });
+            html += `<div aria-label="${AppUtils.escapeHtml(tooltip)}" class="heatmap-cell level-${data.level}" role="img" title="${AppUtils.escapeHtml(tooltip)}"></div>`;
         });
         
         container.innerHTML = html;
@@ -621,11 +633,19 @@ const Charts = {
      */
     init() {
         const currentPage = window.location.pathname;
+
+        if ((currentPage.includes('dashboard') || currentPage.includes('statistics')) && typeof Chart === 'undefined') {
+            return false;
+        }
         
         if (currentPage.includes('dashboard')) {
             this.initDashboard();
         } else if (currentPage.includes('statistics')) {
             this.initStatistics();
+        } else if (currentPage.includes('calendar')) {
+            this.initActivityHeatmap();
         }
+
+        return true;
     }
 };

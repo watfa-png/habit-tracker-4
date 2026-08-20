@@ -4,14 +4,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="js/language-bootstrap.js"></script>
 <title>لوحة التحكم - Watfa Habit Tracker</title>
 <link href="css/style.css" rel="stylesheet"/>
 <link href="css/dashboard.css" rel="stylesheet"/>
 <link href="css/darkmode.css" rel="stylesheet"/>
 <link href="css/responsive.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<script async="" id="chartJs" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="dashboard-container">
@@ -51,7 +52,7 @@
 <i class="fas fa-moon"></i>
 <span data-translate="dark_mode">الوضع الداكن</span>
 <label class="switch">
-<input id="darkModeToggle" type="checkbox"/>
+<input data-translate-aria-label="dark_mode" id="darkModeToggle" type="checkbox"/>
 <span class="slider"></span>
 </label>
 </div>
@@ -70,11 +71,15 @@
 <span id="currentDay"></span>
 </div>
 <div class="top-bar-actions">
-<button aria-label="Change language" class="lang-toggle-btn" id="langToggle">
-<i class="fas fa-globe"></i>
-<span>Türkçe</span>
-</button>
-<button class="mobile-menu-btn" id="mobileMenuBtn">
+<label class="language-select-wrap">
+<i aria-hidden="true" class="fas fa-globe"></i>
+<select class="language-select" data-language-selector="" data-translate-aria-label="select_language">
+<option value="ar">العربية</option>
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+</select>
+</label>
+<button class="mobile-menu-btn" data-translate-aria-label="open_navigation_menu" id="mobileMenuBtn">
 <i class="fas fa-bars"></i>
 </button>
 </div>
@@ -94,7 +99,7 @@
 <p data-translate="from_last_week">من الأسبوع الماضي</p>
 </div>
 <div class="stat-chart">
-<canvas id="commitmentChart"></canvas>
+<canvas data-translate-aria-label="commitment_rate" id="commitmentChart" role="img"></canvas>
 </div>
 </div>
 <div class="stat-card">
@@ -127,7 +132,7 @@
 </div>
 </div>
 <div class="stat-chart">
-<canvas id="streakChart"></canvas>
+<canvas data-translate-aria-label="longest_streak" id="streakChart" role="img"></canvas>
 </div>
 </div>
 <div class="stat-card">
@@ -185,7 +190,7 @@
 <h3 data-translate="weekly_progress">التقدم الأسبوعي</h3>
 </div>
 <div class="chart-body">
-<canvas id="weeklyProgressChart"></canvas>
+<canvas data-translate-aria-label="weekly_progress" id="weeklyProgressChart" role="img"></canvas>
 </div>
 </div>
 <div class="chart-card">
@@ -193,7 +198,7 @@
 <h3 data-translate="habit_distribution">توزيع العادات</h3>
 </div>
 <div class="chart-body">
-<canvas id="habitDistributionChart"></canvas>
+<canvas data-translate-aria-label="habit_distribution" id="habitDistributionChart" role="img"></canvas>
 <div class="chart-legend" id="habitLegend"></div>
 </div>
 </div>
@@ -206,7 +211,7 @@
 </select>
 </div>
 <div class="chart-body">
-<canvas id="dailyStreakChart"></canvas>
+<canvas data-translate-aria-label="daily_streak" id="dailyStreakChart" role="img"></canvas>
 </div>
 </div>
 </div>
@@ -235,11 +240,11 @@
 </main>
 </div>
 <!-- Add Habit Modal -->
-<div class="modal" id="addHabitModal">
+<div aria-labelledby="addHabitModalTitle" aria-modal="true" class="modal" id="addHabitModal" role="dialog">
 <div class="modal-content">
 <div class="modal-header">
-<h2 data-translate="add_new_habit">إضافة عادة جديدة</h2>
-<button class="close-btn" id="closeModal">
+<h2 data-translate="add_new_habit" id="addHabitModalTitle">إضافة عادة جديدة</h2>
+<button class="close-btn" data-translate-aria-label="close_dialog" id="closeModal">
 <i class="fas fa-times"></i>
 </button>
 </div>
@@ -277,14 +282,14 @@
 <div class="form-group">
 <label data-translate="icon">الأيقونة</label>
 <div class="icon-picker" id="iconPicker">
-<button class="icon-btn" data-icon="fa-book" type="button"><i class="fas fa-book"></i></button>
-<button class="icon-btn" data-icon="fa-dumbbell" type="button"><i class="fas fa-dumbbell"></i></button>
-<button class="icon-btn" data-icon="fa-tint" type="button"><i class="fas fa-tint"></i></button>
-<button class="icon-btn" data-icon="fa-code" type="button"><i class="fas fa-code"></i></button>
-<button class="icon-btn" data-icon="fa-heart" type="button"><i class="fas fa-heart"></i></button>
-<button class="icon-btn" data-icon="fa-brain" type="button"><i class="fas fa-brain"></i></button>
-<button class="icon-btn" data-icon="fa-music" type="button"><i class="fas fa-music"></i></button>
-<button class="icon-btn" data-icon="fa-pen" type="button"><i class="fas fa-pen"></i></button>
+<button class="icon-btn" data-icon="fa-book" data-translate-aria-label="icon_book" type="button"><i class="fas fa-book"></i></button>
+<button class="icon-btn" data-icon="fa-dumbbell" data-translate-aria-label="icon_dumbbell" type="button"><i class="fas fa-dumbbell"></i></button>
+<button class="icon-btn" data-icon="fa-tint" data-translate-aria-label="icon_water" type="button"><i class="fas fa-tint"></i></button>
+<button class="icon-btn" data-icon="fa-code" data-translate-aria-label="icon_code" type="button"><i class="fas fa-code"></i></button>
+<button class="icon-btn" data-icon="fa-heart" data-translate-aria-label="icon_heart" type="button"><i class="fas fa-heart"></i></button>
+<button class="icon-btn" data-icon="fa-brain" data-translate-aria-label="icon_brain" type="button"><i class="fas fa-brain"></i></button>
+<button class="icon-btn" data-icon="fa-music" data-translate-aria-label="icon_music" type="button"><i class="fas fa-music"></i></button>
+<button class="icon-btn" data-icon="fa-pen" data-translate-aria-label="icon_writing" type="button"><i class="fas fa-pen"></i></button>
 </div>
 <input id="selectedIcon" type="hidden" value="fa-book"/>
 </div>
@@ -319,7 +324,7 @@
 </div>
 </div>
 <!-- Toast Notification -->
-<div class="toast" id="toast">
+<div aria-live="polite" class="toast" id="toast" role="status">
 <i class="fas fa-check-circle"></i>
 <span id="toastMessage"></span>
 </div>

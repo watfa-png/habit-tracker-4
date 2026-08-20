@@ -4,13 +4,14 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="js/language-bootstrap.js"></script>
 <title>التقويم - Watfa Habit Tracker</title>
 <link href="css/style.css" rel="stylesheet"/>
 <link href="css/dashboard.css" rel="stylesheet"/>
 <link href="css/darkmode.css" rel="stylesheet"/>
 <link href="css/responsive.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 </head>
 <body>
 <div class="dashboard-container">
@@ -50,7 +51,7 @@
 <i class="fas fa-moon"></i>
 <span data-translate="dark_mode">الوضع الداكن</span>
 <label class="switch">
-<input id="darkModeToggle" type="checkbox"/>
+<input data-translate-aria-label="dark_mode" id="darkModeToggle" type="checkbox"/>
 <span class="slider"></span>
 </label>
 </div>
@@ -69,11 +70,15 @@
 <span id="currentDay"></span>
 </div>
 <div class="top-bar-actions">
-<button aria-label="Change language" class="lang-toggle-btn" id="langToggle">
-<i class="fas fa-globe"></i>
-<span>Türkçe</span>
-</button>
-<button class="mobile-menu-btn" id="mobileMenuBtn">
+<label class="language-select-wrap">
+<i aria-hidden="true" class="fas fa-globe"></i>
+<select class="language-select" data-language-selector="" data-translate-aria-label="select_language">
+<option value="ar">العربية</option>
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+</select>
+</label>
+<button class="mobile-menu-btn" data-translate-aria-label="open_navigation_menu" id="mobileMenuBtn">
 <i class="fas fa-bars"></i>
 </button>
 </div>
@@ -81,11 +86,11 @@
 <!-- Calendar View -->
 <div class="calendar-section">
 <div class="calendar-header">
-<button class="nav-btn" id="prevMonth">
+<button class="nav-btn" data-translate-aria-label="previous_month" data-translate-title="previous_month" id="prevMonth">
 <i class="fas fa-chevron-right"></i>
 </button>
 <h2 id="calendarTitle"></h2>
-<button class="nav-btn" id="nextMonth">
+<button class="nav-btn" data-translate-aria-label="next_month" data-translate-title="next_month" id="nextMonth">
 <i class="fas fa-chevron-left"></i>
 </button>
 </div>
@@ -134,11 +139,11 @@
 </main>
 </div>
 <!-- Events Modal -->
-<div class="modal" id="eventsModal">
+<div aria-labelledby="eventsModalTitle" aria-modal="true" class="modal" id="eventsModal" role="dialog">
 <div class="modal-content">
 <div class="modal-header">
 <h2 data-translate="events_today" id="eventsModalTitle">أحداث اليوم</h2>
-<button class="close-btn" id="closeEventsModal">
+<button class="close-btn" data-translate-aria-label="close_dialog" id="closeEventsModal">
 <i class="fas fa-times"></i>
 </button>
 </div>
@@ -154,11 +159,11 @@
 </div>
 </div>
 <!-- Event Form Modal -->
-<div class="modal" id="eventFormModal">
+<div aria-labelledby="eventFormTitle" aria-modal="true" class="modal" id="eventFormModal" role="dialog">
 <div class="modal-content">
 <div class="modal-header">
 <h2 data-translate="add_event" id="eventFormTitle">إضافة حدث</h2>
-<button class="close-btn" id="closeEventFormModal">
+<button class="close-btn" data-translate-aria-label="close_dialog" id="closeEventFormModal">
 <i class="fas fa-times"></i>
 </button>
 </div>
@@ -191,6 +196,11 @@
 </form>
 </div>
 </div>
+<!-- Toast Notification -->
+<div aria-live="polite" class="toast" id="toast" role="status">
+<i class="fas fa-check-circle"></i>
+<span id="toastMessage"></span>
+</div>
 <!-- Motivational Quote Modal -->
 <div class="motivational-modal" id="motivationalModal">
 <div class="motivational-overlay"></div>
@@ -210,6 +220,7 @@
 <script src="js/translations.js"></script>
 <script src="js/habits.js"></script>
 <script src="js/statistics.js"></script>
+<script src="js/charts.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/app.js"></script>
 <script src="js/init.js"></script>

@@ -4,14 +4,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="js/language-bootstrap.js"></script>
 <title>الإحصائيات - Watfa Habit Tracker</title>
 <link href="css/style.css" rel="stylesheet"/>
 <link href="css/dashboard.css" rel="stylesheet"/>
 <link href="css/darkmode.css" rel="stylesheet"/>
 <link href="css/responsive.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<script async="" id="chartJs" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="dashboard-container">
@@ -51,7 +52,7 @@
 <i class="fas fa-moon"></i>
 <span data-translate="dark_mode">الوضع الداكن</span>
 <label class="switch">
-<input id="darkModeToggle" type="checkbox"/>
+<input data-translate-aria-label="dark_mode" id="darkModeToggle" type="checkbox"/>
 <span class="slider"></span>
 </label>
 </div>
@@ -70,11 +71,15 @@
 <span id="currentDay"></span>
 </div>
 <div class="top-bar-actions">
-<button aria-label="Change language" class="lang-toggle-btn" id="langToggle">
-<i class="fas fa-globe"></i>
-<span>Türkçe</span>
-</button>
-<button class="mobile-menu-btn" id="mobileMenuBtn">
+<label class="language-select-wrap">
+<i aria-hidden="true" class="fas fa-globe"></i>
+<select class="language-select" data-language-selector="" data-translate-aria-label="select_language">
+<option value="ar">العربية</option>
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+</select>
+</label>
+<button class="mobile-menu-btn" data-translate-aria-label="open_navigation_menu" id="mobileMenuBtn">
 <i class="fas fa-bars"></i>
 </button>
 </div>
@@ -130,7 +135,7 @@
 </select>
 </div>
 <div class="chart-body">
-<canvas id="monthlyProgressChart"></canvas>
+<canvas data-translate-aria-label="monthly_progress" id="monthlyProgressChart" role="img"></canvas>
 </div>
 </div>
 <div class="chart-card">
@@ -138,7 +143,7 @@
 <h3 data-translate="habit_performance">أداء العادات</h3>
 </div>
 <div class="chart-body">
-<canvas id="habitPerformanceChart"></canvas>
+<canvas data-translate-aria-label="habit_performance" id="habitPerformanceChart" role="img"></canvas>
 </div>
 </div>
 <div class="chart-card">
@@ -146,7 +151,7 @@
 <h3 data-translate="category_breakdown">توزيع التصنيفات</h3>
 </div>
 <div class="chart-body">
-<canvas id="categoryBreakdownChart"></canvas>
+<canvas data-translate-aria-label="category_breakdown" id="categoryBreakdownChart" role="img"></canvas>
 </div>
 </div>
 <div class="chart-card">
@@ -154,7 +159,7 @@
 <h3 data-translate="weekly_comparison">مقارنة أسبوعية</h3>
 </div>
 <div class="chart-body">
-<canvas id="weeklyComparisonChart"></canvas>
+<canvas data-translate-aria-label="weekly_comparison" id="weeklyComparisonChart" role="img"></canvas>
 </div>
 </div>
 <div class="chart-card full-width">

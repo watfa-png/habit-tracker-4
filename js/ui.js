@@ -7,6 +7,13 @@
  */
 
 const UI = {
+    calendarDate: null,
+    renderCurrentCalendar: null,
+
+    displayUsername(username) {
+        return username === 'Watfa User' ? Translations.get('default_username') : username;
+    },
+
     /**
      * Show toast notification
      * @param {string} message - Toast message
@@ -73,7 +80,7 @@ const UI = {
         }
         
         const session = Storage.getSession();
-        const username = session ? session.username : '';
+        const username = session ? this.displayUsername(session.username) : '';
         
         welcomeElement.textContent = `${greeting} ${username} 👋`;
     },
@@ -131,6 +138,7 @@ const UI = {
      * Update stats cards
      */
     updateStats() {
+        if (typeof Habits === 'undefined' || typeof Statistics === 'undefined') return;
         const habits = Habits.getAll();
         const stats = Storage.getStatistics();
         
@@ -242,7 +250,7 @@ const UI = {
         
         if (!calendarGrid || !calendarTitle) return;
         
-        let currentDate = new Date();
+        this.calendarDate ||= new Date();
         
         const renderCalendar = (date) => {
             const year = date.getFullYear();
@@ -274,17 +282,33 @@ const UI = {
                 const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                 
                 // Check if any habits were completed on this day
-                const hasHabits = habits.some(h => h.completedDates.includes(dateStr));
+                const completedHabitCount = habits.filter(h => h.completedDates.includes(dateStr)).length;
+                const hasHabits = completedHabitCount > 0;
                 const isCompleted = hasHabits;
                 
                 // Check if any events exist on this day
                 const dayEvents = events.filter(e => e.date === dateStr);
                 const hasEvents = dayEvents.length > 0;
+                const localizedDate = new Date(year, month, day, 12).toLocaleDateString(Translations.locale(lang), {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const dayLabel = Translations.format('calendar_day_summary', {
+                    date: localizedDate,
+                    habits: completedHabitCount,
+                    events: dayEvents.length
+                }, lang);
                 
                 html += `
                     <div class="calendar-day ${isToday ? 'today' : ''} ${hasHabits ? 'has-habits' : ''} ${isCompleted ? 'completed' : ''} ${hasEvents ? 'has-events' : ''}" 
+                         aria-label="${AppUtils.escapeHtml(dayLabel)}"
                          data-date="${dateStr}"
-                         onclick="UI.openEventsModal('${dateStr}')">
+                         onclick="UI.openEventsModal('${dateStr}')"
+                         onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); UI.openEventsModal('${dateStr}'); }"
+                         role="button"
+                         tabindex="0">
                         ${day}
                         ${hasEvents ? `<span class="event-indicator"></span>` : ''}
                     </div>
@@ -294,19 +318,22 @@ const UI = {
             calendarGrid.innerHTML = html;
         };
         
-        renderCalendar(currentDate);
+        this.renderCurrentCalendar = () => renderCalendar(this.calendarDate);
+        this.renderCurrentCalendar();
         
-        if (prevMonthBtn) {
+        if (prevMonthBtn && !prevMonthBtn.dataset.calendarBound) {
+            prevMonthBtn.dataset.calendarBound = 'true';
             prevMonthBtn.addEventListener('click', () => {
-                currentDate.setMonth(currentDate.getMonth() - 1);
-                renderCalendar(currentDate);
+                this.calendarDate.setMonth(this.calendarDate.getMonth() - 1);
+                this.renderCurrentCalendar();
             });
         }
         
-        if (nextMonthBtn) {
+        if (nextMonthBtn && !nextMonthBtn.dataset.calendarBound) {
+            nextMonthBtn.dataset.calendarBound = 'true';
             nextMonthBtn.addEventListener('click', () => {
-                currentDate.setMonth(currentDate.getMonth() + 1);
-                renderCalendar(currentDate);
+                this.calendarDate.setMonth(this.calendarDate.getMonth() + 1);
+                this.renderCurrentCalendar();
             });
         }
     },
@@ -323,7 +350,7 @@ const UI = {
         if (!selectedDateElement) return;
         
         const lang = Storage.getLanguage() || 'ar';
-        const date = new Date(dateStr);
+        const date = AppUtils.localDateFromKey(dateStr);
         selectedDateElement.textContent = date.toLocaleDateString(Translations.locale(lang), {
             weekday: 'long',
             year: 'numeric',
@@ -376,7 +403,7 @@ const UI = {
         
         // Update title with date
         const lang = Storage.getLanguage() || 'ar';
-        const date = new Date(dateStr);
+        const date = AppUtils.localDateFromKey(dateStr);
         eventsModalTitle.textContent = date.toLocaleDateString(Translations.locale(lang), {
             weekday: 'long',
             year: 'numeric',
@@ -409,7 +436,10 @@ const UI = {
             return;
         }
         
-        eventsList.innerHTML = events.map(event => `
+        eventsList.innerHTML = events.map(event => {
+            const editLabel = Translations.format('edit_event_aria', { title: event.title });
+            const deleteLabel = Translations.format('delete_event_aria', { title: event.title });
+            return `
             <div class="event-item" data-event-id="${event.id}">
                 <div class="event-icon ${event.type}">
                     <i class="fas ${event.type === 'reminder' ? 'fa-bell' : 'fa-calendar'}"></i>
@@ -423,15 +453,16 @@ const UI = {
                     ${event.description ? `<div class="event-description">${AppUtils.escapeHtml(event.description)}</div>` : ''}
                 </div>
                 <div class="event-actions">
-                    <button class="event-action-btn edit" onclick="UI.editEvent('${event.id}')">
+                    <button aria-label="${AppUtils.escapeHtml(editLabel)}" class="event-action-btn edit" onclick="UI.editEvent('${event.id}')" type="button">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="event-action-btn delete" onclick="UI.deleteEvent('${event.id}')">
+                    <button aria-label="${AppUtils.escapeHtml(deleteLabel)}" class="event-action-btn delete" onclick="UI.deleteEvent('${event.id}')" type="button">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
-        `).join('');
+        `;
+        }).join('');
     },
 
     /**
@@ -521,7 +552,7 @@ const UI = {
         this.renderEventsList(currentDate);
         
         // Refresh calendar to show event indicator
-        this.initCalendar();
+        this.renderCurrentCalendar?.();
         
         // Close form modal
         this.closeEventFormModal();
@@ -551,7 +582,7 @@ const UI = {
             }
             
             // Refresh calendar to remove event indicator
-            this.initCalendar();
+            this.renderCurrentCalendar?.();
             
             this.showToast(Translations.get('event_deleted'));
         }
@@ -634,16 +665,79 @@ const UI = {
      * Initialize language toggle
      */
     initLanguageToggle() {
-        const langToggle = document.getElementById('langToggle');
-        if (langToggle) {
-            langToggle.addEventListener('click', () => {
-                const currentLang = Storage.getLanguage() || 'ar';
-                const languages = ['ar', 'tr', 'en'];
-                const newLang = languages[(languages.indexOf(currentLang) + 1) % languages.length];
-                Translations.setLanguage(newLang);
-                window.location.reload();
+        document.querySelectorAll('[data-language-selector]').forEach((selector) => {
+            selector.value = Storage.getLanguage() || 'ar';
+            if (selector.dataset.languageBound) return;
+            selector.dataset.languageBound = 'true';
+            selector.addEventListener('change', (event) => {
+                Translations.setLanguage(event.target.value);
             });
+        });
+
+        if (!this.languageChangeBound) {
+            this.languageChangeBound = true;
+            document.addEventListener('watfa:languagechange', () => this.refreshLocalizedContent());
         }
+    },
+
+    /**
+     * Refresh JavaScript-rendered content after a runtime language change.
+     */
+    refreshLocalizedContent() {
+        this.updateDate();
+        this.updateWelcomeMessage();
+
+        if (typeof Habits !== 'undefined') {
+            this.updateStats();
+            if (document.getElementById('habitsList')) {
+                let habits = Habits.getTodayHabits();
+                const filter = document.getElementById('habitFilter')?.value || 'all';
+                const query = document.getElementById('habitSearch')?.value || '';
+                habits = Habits.search(Habits.filter(habits, filter), query);
+                Habits.render(habits);
+            }
+        }
+
+        this.renderCurrentCalendar?.();
+        const selectedDate = document.getElementById('eventsModal')?.dataset.currentDate;
+        if (selectedDate) {
+            this.showDayDetails(selectedDate);
+            if (document.getElementById('eventsModal')?.classList.contains('active')) {
+                this.openEventsModal(selectedDate);
+            }
+        }
+
+        const habitModal = document.getElementById('addHabitModal');
+        if (habitModal?.dataset.editId) {
+            habitModal.querySelector('h2').textContent = Translations.get('edit_habit');
+        }
+        const eventForm = document.getElementById('eventForm');
+        if (eventForm?.dataset.editId) {
+            document.getElementById('eventFormTitle').textContent = Translations.get('edit_event');
+        }
+
+        if (typeof Statistics !== 'undefined' && window.location.pathname.includes('statistics')) {
+            if (Statistics.hasData()) {
+                Statistics.updateOverviewCards();
+                Statistics.updateAchievements();
+            } else {
+                Statistics.showEmptyState();
+            }
+        }
+
+        if (typeof Charts !== 'undefined') {
+            Charts.destroyAll();
+            Charts.init();
+        }
+
+        const motivationalModal = document.getElementById('motivationalModal');
+        if (motivationalModal?.classList.contains('active')) this.showMotivationalModal();
+
+        const session = Storage.getSession();
+        const currentUsername = document.getElementById('currentUsername');
+        const currentEmail = document.getElementById('currentEmail');
+        if (currentUsername && session) currentUsername.textContent = this.displayUsername(session.username);
+        if (currentEmail && session) currentEmail.textContent = session.email || '—';
     },
 
     /**
@@ -779,16 +873,6 @@ const UI = {
         }
         // Password authentication is intentionally not part of this local-first app.
 
-        // Language setting
-        const languageSetting = document.getElementById('languageSetting');
-        if (languageSetting) {
-            languageSetting.value = Storage.getLanguage() || 'ar';
-            languageSetting.addEventListener('change', (e) => {
-                Translations.setLanguage(e.target.value);
-                window.location.reload();
-            });
-        }
-        
         // Export buttons
         const exportCSVBtn = document.getElementById('exportCSVBtn');
         const exportPDFBtn = document.getElementById('exportPDFBtn');
@@ -871,13 +955,20 @@ const UI = {
      */
     exportCSV() {
         const habits = Habits.getAll();
-        const session = Storage.getSession();
+        const locale = Translations.locale();
         
         let csv = [Translations.get('csv_name'), Translations.get('csv_description'), Translations.get('csv_category'), Translations.get('csv_frequency'), Translations.get('csv_streak'), Translations.get('csv_best_streak'), Translations.get('csv_completed_dates')].map(AppUtils.csvCell).join(',') + '\n';
         habits.forEach(habit => {
             csv += [
-                habit.name, habit.description, habit.category, habit.frequency,
-                habit.streak, habit.bestStreak, (habit.completedDates || []).join(', ')
+                habit.name,
+                habit.description,
+                Translations.get(habit.category),
+                Translations.get(habit.frequency),
+                habit.streak,
+                habit.bestStreak,
+                (habit.completedDates || []).map(date =>
+                    AppUtils.localDateFromKey(date).toLocaleDateString(locale)
+                ).join(', ')
             ].map(AppUtils.csvCell).join(',') + '\n';
         });
         
@@ -922,7 +1013,6 @@ const UI = {
             const habits = Habits.getAll();
             const stats = Storage.getStatistics();
             const lang = Storage.getLanguage() || 'ar';
-            const isRTL = lang === 'ar';
 
             // Create PDF document
             const doc = new jsPDFConstructor({
@@ -1008,7 +1098,7 @@ const UI = {
                 const missedDays = Math.max(0, expectedCompletions - habit.completedDates.length);
                 const completionRate = expectedCompletions > 0 ? Math.round((habit.completedDates.length / expectedCompletions) * 100) : 0;
 
-                const habitLine = `${habit.name} (${Translations.get(habit.category)}) - ${Translations.get(habit.active ? 'active' : 'inactive')} - ${completionRate}% ${Translations.get('complete_label')} - ${habit.completedDates.length} ${Translations.get('days_completed')} - ${missedDays} ${Translations.get('missed')}`;
+                const habitLine = `${habit.name} (${Translations.get(habit.category)}) - ${Translations.get(habit.active === false ? 'inactive' : 'active')} - ${completionRate}% ${Translations.get('complete_label')} - ${habit.completedDates.length} ${Translations.get('days_completed')} - ${missedDays} ${Translations.get('missed')}`;
                 const wrapped = doc.splitTextToSize(habitLine, contentWidth);
                 wrapped.forEach(textLine => {
                     doc.text(textLine, margin, yPos);
@@ -1180,10 +1270,10 @@ const UI = {
             const currentEmail = document.getElementById('currentEmail');
             
             if (currentUsername) {
-                currentUsername.textContent = session.username;
+                currentUsername.textContent = this.displayUsername(session.username);
             }
             if (currentEmail) {
-                currentEmail.textContent = session.email;
+                currentEmail.textContent = session.email || '—';
             }
         }
     },

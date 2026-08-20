@@ -5,6 +5,7 @@ A lightweight, local-first, trilingual habit tracker maintained by **Watfa**. It
 ## Features
 
 - 🌐 Full interface localization: العربية (RTL), Türkçe, English (LTR)
+- Direct language selection with immediate updates and persisted browser preference
 
 - Daily and weekly habits with streak tracking
 - Dashboard and interactive statistics
@@ -43,6 +44,14 @@ See [SECURITY.md](SECURITY.md) for reporting issues and deployment guidance.
 node tests/smoke.test.js
 node --check js/*.js
 ```
+
+For the real-browser localization regression test, serve the repository on port 4173 and run:
+
+```bash
+node tests/browser-localization.test.js
+```
+
+Set `WATFA_BASE_URL` or `CHROME_PATH` when the server URL or Chrome executable is not in a standard location.
 
 For releases, also perform a browser smoke test on the landing page, dashboard, statistics, calendar, and settings in Arabic, Turkish, and English and at mobile and desktop widths.
 

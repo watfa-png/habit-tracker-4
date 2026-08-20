@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="js/language-bootstrap.js"></script>
 <title>Watfa Habit Tracker - ابنِ عادات أفضل</title>
 <link href="css/style.css" rel="stylesheet"/>
 <link href="css/darkmode.css" rel="stylesheet"/>
@@ -13,8 +14,8 @@
             text-align: center;
         }
     </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 </head>
 <body>
 <!-- Landing Page -->
@@ -70,10 +71,14 @@
 </div>
 </div>
 <div class="language-toggle">
-<button aria-label="Change language" class="lang-btn" id="langToggle">
-<i class="fas fa-globe"></i>
-<span>Türkçe</span>
-</button>
+<label class="language-select-wrap">
+<i aria-hidden="true" class="fas fa-globe"></i>
+<select class="language-select" data-language-selector="" data-translate-aria-label="select_language">
+<option value="ar">العربية</option>
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+</select>
+</label>
 </div>
 </div>
 <script src="js/utils.js"></script>

@@ -4,14 +4,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="js/language-bootstrap.js"></script>
 <title>الإعدادات - Watfa Habit Tracker</title>
 <link href="css/style.css" rel="stylesheet"/>
 <link href="css/dashboard.css" rel="stylesheet"/>
 <link href="css/darkmode.css" rel="stylesheet"/>
 <link href="css/responsive.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="dashboard-container">
@@ -51,7 +52,7 @@
 <i class="fas fa-moon"></i>
 <span data-translate="dark_mode">الوضع الداكن</span>
 <label class="switch">
-<input id="darkModeToggle" type="checkbox"/>
+<input data-translate-aria-label="dark_mode" id="darkModeToggle" type="checkbox"/>
 <span class="slider"></span>
 </label>
 </div>
@@ -70,11 +71,15 @@
 <span id="currentDay"></span>
 </div>
 <div class="top-bar-actions">
-<button aria-label="Change language" class="lang-toggle-btn" id="langToggle">
-<i class="fas fa-globe"></i>
-<span>Türkçe</span>
-</button>
-<button class="mobile-menu-btn" id="mobileMenuBtn">
+<label class="language-select-wrap">
+<i aria-hidden="true" class="fas fa-globe"></i>
+<select class="language-select" data-language-selector="" data-translate-aria-label="select_language">
+<option value="ar">العربية</option>
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+</select>
+</label>
+<button class="mobile-menu-btn" data-translate-aria-label="open_navigation_menu" id="mobileMenuBtn">
 <i class="fas fa-bars"></i>
 </button>
 </div>
@@ -93,7 +98,7 @@
 </div>
 </div>
 <label class="switch">
-<input id="darkModeSetting" type="checkbox"/>
+<input data-translate-aria-label="dark_mode" id="darkModeSetting" type="checkbox"/>
 <span class="slider"></span>
 </label>
 </div>
@@ -105,7 +110,7 @@
 <p data-translate="language_desc">اختر لغة التطبيق المفضلة</p>
 </div>
 </div>
-<select class="setting-select" id="languageSetting">
+<select class="setting-select" data-language-selector="" data-translate-aria-label="select_language" id="languageSetting">
 <option value="ar">العربية</option>
 <option value="tr">Türkçe</option><option value="en">English</option>
 </select>
@@ -173,7 +178,7 @@
 <i class="fas fa-info-circle"></i>
 <div>
 <h3 data-translate="version">الإصدار</h3>
-<p>2.1.0</p>
+<p>2.1.1</p>
 </div>
 </div>
 </div>
@@ -182,11 +187,11 @@
 </main>
 </div>
 <!-- Edit Username Modal -->
-<div class="modal" id="editUsernameModal">
+<div aria-labelledby="editUsernameModalTitle" aria-modal="true" class="modal" id="editUsernameModal" role="dialog">
 <div class="modal-content">
 <div class="modal-header">
-<h2 data-translate="edit_username">تعديل اسم المستخدم</h2>
-<button class="close-btn" id="closeUsernameModal">
+<h2 data-translate="edit_username" id="editUsernameModalTitle">تعديل اسم المستخدم</h2>
+<button class="close-btn" data-translate-aria-label="close_dialog" id="closeUsernameModal">
 <i class="fas fa-times"></i>
 </button>
 </div>
@@ -203,11 +208,11 @@
 </div>
 </div>
 <!-- Edit Email Modal -->
-<div class="modal" id="editEmailModal">
+<div aria-labelledby="editEmailModalTitle" aria-modal="true" class="modal" id="editEmailModal" role="dialog">
 <div class="modal-content">
 <div class="modal-header">
-<h2 data-translate="edit_email">تعديل البريد الإلكتروني</h2>
-<button class="close-btn" id="closeEmailModal">
+<h2 data-translate="edit_email" id="editEmailModalTitle">تعديل البريد الإلكتروني</h2>
+<button class="close-btn" data-translate-aria-label="close_dialog" id="closeEmailModal">
 <i class="fas fa-times"></i>
 </button>
 </div>
@@ -222,6 +227,11 @@
 </div>
 </form>
 </div>
+</div>
+<!-- Toast Notification -->
+<div aria-live="polite" class="toast" id="toast" role="status">
+<i class="fas fa-check-circle"></i>
+<span id="toastMessage"></span>
 </div>
 <!-- Motivational Quote Modal -->
 <div class="motivational-modal" id="motivationalModal">

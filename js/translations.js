@@ -114,6 +114,28 @@ const Translations = {
         "dark_mode_desc": "تفعيل الوضع الداكن للراحة",
         "language": "اللغة",
         "language_desc": "اختر لغة التطبيق المفضلة",
+        "select_language": "اختر اللغة",
+        "open_navigation_menu": "فتح قائمة التنقل",
+        "previous_month": "الشهر السابق",
+        "next_month": "الشهر التالي",
+        "close_dialog": "إغلاق النافذة",
+        "edit_habit_aria": "تعديل عادة {name}",
+        "delete_habit_aria": "حذف عادة {name}",
+        "complete_habit_aria": "وضع علامة مكتملة على عادة {name}",
+        "uncomplete_habit_aria": "إلغاء إكمال عادة {name}",
+        "edit_event_aria": "تعديل حدث {title}",
+        "delete_event_aria": "حذف حدث {title}",
+        "icon_book": "أيقونة كتاب",
+        "icon_dumbbell": "أيقونة أثقال",
+        "icon_water": "أيقونة ماء",
+        "icon_code": "أيقونة برمجة",
+        "icon_heart": "أيقونة قلب",
+        "icon_brain": "أيقونة عقل",
+        "icon_music": "أيقونة موسيقى",
+        "icon_writing": "أيقونة كتابة",
+        "heatmap_tooltip": "{date}: {count} إنجازات",
+        "calendar_day_summary": "{date}: {habits} عادات مكتملة، {events} أحداث",
+        "default_username": "مستخدم Watfa",
         "account": "الملف المحلي",
         "email": "البريد الإلكتروني",
         "edit": "تعديل",
@@ -374,6 +396,28 @@ const Translations = {
         "dark_mode_desc": "Daha rahat kullanım için karanlık modu etkinleştir",
         "language": "Dil",
         "language_desc": "Tercih ettiğin uygulama dilini seç",
+        "select_language": "Dil seç",
+        "open_navigation_menu": "Gezinme menüsünü aç",
+        "previous_month": "Önceki ay",
+        "next_month": "Sonraki ay",
+        "close_dialog": "Pencereyi kapat",
+        "edit_habit_aria": "{name} alışkanlığını düzenle",
+        "delete_habit_aria": "{name} alışkanlığını sil",
+        "complete_habit_aria": "{name} alışkanlığını tamamlandı olarak işaretle",
+        "uncomplete_habit_aria": "{name} alışkanlığının tamamlanmasını geri al",
+        "edit_event_aria": "{title} etkinliğini düzenle",
+        "delete_event_aria": "{title} etkinliğini sil",
+        "icon_book": "Kitap simgesi",
+        "icon_dumbbell": "Dambıl simgesi",
+        "icon_water": "Su simgesi",
+        "icon_code": "Kod simgesi",
+        "icon_heart": "Kalp simgesi",
+        "icon_brain": "Beyin simgesi",
+        "icon_music": "Müzik simgesi",
+        "icon_writing": "Yazı simgesi",
+        "heatmap_tooltip": "{date}: {count} tamamlama",
+        "calendar_day_summary": "{date}: {habits} alışkanlık tamamlandı, {events} etkinlik",
+        "default_username": "Watfa Kullanıcısı",
         "account": "Yerel Profil",
         "email": "E-posta",
         "edit": "Düzenle",
@@ -594,6 +638,28 @@ const Translations = {
         "dark_mode_desc": "Enable dark mode for comfort",
         "language": "Language",
         "language_desc": "Choose your preferred app language",
+        "select_language": "Select language",
+        "open_navigation_menu": "Open navigation menu",
+        "previous_month": "Previous month",
+        "next_month": "Next month",
+        "close_dialog": "Close dialog",
+        "edit_habit_aria": "Edit {name} habit",
+        "delete_habit_aria": "Delete {name} habit",
+        "complete_habit_aria": "Mark {name} habit complete",
+        "uncomplete_habit_aria": "Mark {name} habit incomplete",
+        "edit_event_aria": "Edit {title} event",
+        "delete_event_aria": "Delete {title} event",
+        "icon_book": "Book icon",
+        "icon_dumbbell": "Dumbbell icon",
+        "icon_water": "Water icon",
+        "icon_code": "Code icon",
+        "icon_heart": "Heart icon",
+        "icon_brain": "Brain icon",
+        "icon_music": "Music icon",
+        "icon_writing": "Writing icon",
+        "heatmap_tooltip": "{date}: {count} completions",
+        "calendar_day_summary": "{date}: {habits} habits completed, {events} events",
+        "default_username": "Watfa User",
         "account": "Local profile",
         "email": "Email",
         "edit": "Edit",
@@ -752,6 +818,9 @@ const Translations = {
         const language = this.normalizeLanguage(lang);
         Storage.setLanguage(language);
         this.applyLanguage(language);
+        if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function' && typeof CustomEvent === 'function') {
+            document.dispatchEvent(new CustomEvent('watfa:languagechange', { detail: { language } }));
+        }
     },
 
     pageTitleKey() {
@@ -779,14 +848,16 @@ const Translations = {
         document.querySelectorAll('[data-translate-aria-label]').forEach((element) => {
             element.setAttribute('aria-label', this.get(element.getAttribute('data-translate-aria-label'), language));
         });
+        document.querySelectorAll('[data-translate-title]').forEach((element) => {
+            element.setAttribute('title', this.get(element.getAttribute('data-translate-title'), language));
+        });
 
-        const labels = { ar: 'العربية', tr: 'Türkçe', en: 'English' };
-        const order = this.supportedLanguages;
-        const next = order[(order.indexOf(language) + 1) % order.length];
-        document.querySelectorAll('#langToggle span').forEach((span) => { span.textContent = labels[next]; });
-        document.querySelectorAll('#languageSetting').forEach((select) => { select.value = language; });
+        document.querySelectorAll('[data-language-selector], #languageSetting').forEach((select) => {
+            select.value = language;
+        });
 
         document.title = `${this.get(this.pageTitleKey(), language)} - Watfa Habit Tracker`;
+        document.documentElement.classList.remove('i18n-pending');
     },
 
     init() {
