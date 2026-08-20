@@ -1,0 +1,35 @@
+name: Watfa CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Smoke & Syntax Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          for file in js/*.js; do
+            echo "Checking $file"
+            node --check "$file"
+          done
+
+      - name: Run smoke tests
+        run: node tests/smoke.test.js
