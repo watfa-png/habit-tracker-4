@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const warning = document.createElement('div');
             warning.className = 'app-error-banner';
             warning.setAttribute('role', 'alert');
-            warning.textContent = 'تعذر تشغيل التطبيق بشكل كامل. جرّب تحديث الصفحة.';
+            warning.textContent = typeof Translations !== 'undefined' ? Translations.get('app_load_error') : 'Watfa Habit Tracker could not start.';
             root.prepend(warning);
         }
     }

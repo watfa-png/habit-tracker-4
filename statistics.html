@@ -1,252 +1,240 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html dir="rtl" lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الإحصائيات - Watfa Habit Tracker</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/darkmode.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>الإحصائيات - Watfa Habit Tracker</title>
+<link href="css/style.css" rel="stylesheet"/>
+<link href="css/dashboard.css" rel="stylesheet"/>
+<link href="css/darkmode.css" rel="stylesheet"/>
+<link href="css/responsive.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Watfa Habit Tracker</span>
-                </div>
-                <p data-translate="tagline">تتبع عاداتك اليومية</p>
-            </div>
-            
-            <button class="add-habit-btn" id="addHabitBtn">
-                <i class="fas fa-plus"></i>
-                <span data-translate="add_habit">إضافة عادة جديدة</span>
-            </button>
-            
-            <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span data-translate="dashboard">لوحة التحكم</span>
-                </a>
-                <a href="calendar.html" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span data-translate="calendar">التقويم</span>
-                </a>
-                <a href="statistics.html" class="nav-link active">
-                    <i class="fas fa-chart-bar"></i>
-                    <span data-translate="statistics">الإحصائيات</span>
-                </a>
-                <a href="settings.html" class="nav-link">
-                    <i class="fas fa-cog"></i>
-                    <span data-translate="settings">الإعدادات</span>
-                </a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="dark-mode-toggle">
-                    <i class="fas fa-moon"></i>
-                    <span data-translate="dark_mode">الوضع الداكن</span>
-                    <label class="switch">
-                        <input type="checkbox" id="darkModeToggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="top-bar">
-                <div class="welcome-section">
-                    <h1 data-translate="statistics">الإحصائيات</h1>
-                    <p class="welcome-message" data-translate="stats_subtitle">تحليل شامل لتقدمك وإنجازاتك</p>
-                </div>
-                <div class="date-section">
-                    <i class="fas fa-calendar"></i>
-                    <span id="currentDate"></span>
-                    <span id="currentDay"></span>
-                </div>
-                <div class="top-bar-actions">
-                    <button class="lang-toggle-btn" id="langToggle">
-                        <i class="fas fa-globe"></i>
-                        <span>English</span>
-                    </button>
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Stats Overview -->
-            <div class="stats-overview">
-                <div class="overview-card">
-                    <div class="overview-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="overview-content">
-                        <h3 data-translate="total_completions">إجمالي الإنجازات</h3>
-                        <span class="overview-value" id="totalCompletions">0</span>
-                    </div>
-                </div>
-                <div class="overview-card">
-                    <div class="overview-icon">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <div class="overview-content">
-                        <h3 data-translate="current_streak">السلسلة الحالية</h3>
-                        <span class="overview-value" id="currentStreak">0 أيام</span>
-                    </div>
-                </div>
-                <div class="overview-card">
-                    <div class="overview-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="overview-content">
-                        <h3 data-translate="best_streak">أفضل سلسلة</h3>
-                        <span class="overview-value" id="bestStreak">0 يوم</span>
-                    </div>
-                </div>
-                <div class="overview-card">
-                    <div class="overview-icon">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                    <div class="overview-content">
-                        <h3 data-translate="success_rate">معدل النجاح</h3>
-                        <span class="overview-value" id="successRate">0%</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Charts Grid -->
-            <div class="charts-grid">
-                <div class="chart-card large">
-                    <div class="chart-header">
-                        <h3 data-translate="monthly_progress">التقدم الشهري</h3>
-                        <select class="time-filter" id="monthFilter">
-                            <option value="current" data-translate="current_month">الشهر الحالي</option>
-                            <option value="last" data-translate="last_month">الشهر الماضي</option>
-                            <option value="3months" data-translate="last_3_months">آخر 3 أشهر</option>
-                        </select>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="monthlyProgressChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 data-translate="habit_performance">أداء العادات</h3>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="habitPerformanceChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 data-translate="category_breakdown">توزيع التصنيفات</h3>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="categoryBreakdownChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 data-translate="weekly_comparison">مقارنة أسبوعية</h3>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="weeklyComparisonChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="chart-card full-width">
-                    <div class="chart-header">
-                        <h3 data-translate="activity_heatmap">خريطة النشاط</h3>
-                        <div class="heatmap-legend">
-                            <span data-translate="less">أقل</span>
-                            <div class="legend-colors">
-                                <span class="color-0"></span>
-                                <span class="color-1"></span>
-                                <span class="color-2"></span>
-                                <span class="color-3"></span>
-                                <span class="color-4"></span>
-                            </div>
-                            <span data-translate="more">أكثر</span>
-                        </div>
-                    </div>
-                    <div class="chart-body">
-                        <div class="heatmap-container" id="activityHeatmap"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Achievements -->
-            <div class="achievements-section">
-                <h2 data-translate="achievements">الإنجازات</h2>
-                <div class="achievements-grid">
-                    <div class="achievement-card unlocked">
-                        <div class="achievement-icon">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <h4 data-translate="streak_7">سلسلة 7 أيام</h4>
-                        <p data-translate="streak_7_desc">أكمل عاداتك لمدة 7 أيام متتالية</p>
-                    </div>
-                    <div class="achievement-card unlocked">
-                        <div class="achievement-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h4 data-translate="first_habit">أول عادة</h4>
-                        <p data-translate="first_habit_desc">أنشئ عادتك الأولى</p>
-                    </div>
-                    <div class="achievement-card">
-                        <div class="achievement-icon locked">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h4 data-translate="streak_30">سلسلة 30 يوم</h4>
-                        <p data-translate="streak_30_desc">أكمل عاداتك لمدة 30 يوم متتالية</p>
-                    </div>
-                    <div class="achievement-card">
-                        <div class="achievement-icon locked">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h4 data-translate="perfect_week">أسبوع مثالي</h4>
-                        <p data-translate="perfect_week_desc">أكمل جميع عاداتك لأسبوع كامل</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Motivational Quote Modal -->
-    <div class="motivational-modal" id="motivationalModal">
-        <div class="motivational-overlay"></div>
-        <div class="motivational-content">
-            <div class="motivational-icon">
-                <i class="fas fa-quote-left"></i>
-            </div>
-            <p class="motivational-quote" id="motivationalQuote"></p>
-            <button class="motivational-continue-btn" id="motivationalContinueBtn">
-                <span data-translate="motivational_continue">متابعة</span>
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-
-    <script src="js/utils.js"></script>
-    <script src="js/storage.js"></script>
-    <script src="js/translations.js"></script>
-    <script src="js/habits.js"></script>
-    <script src="js/statistics.js"></script>
-    <script src="js/charts.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/init.js"></script>
+<div class="dashboard-container">
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div class="logo">
+<i class="fas fa-check-circle"></i>
+<span>Watfa Habit Tracker</span>
+</div>
+<p data-translate="tagline">تتبع عاداتك اليومية</p>
+</div>
+<button class="add-habit-btn" id="addHabitBtn">
+<i class="fas fa-plus"></i>
+<span data-translate="add_habit">إضافة عادة جديدة</span>
+</button>
+<nav class="sidebar-nav">
+<a class="nav-link" href="dashboard.html">
+<i class="fas fa-home"></i>
+<span data-translate="dashboard">لوحة التحكم</span>
+</a>
+<a class="nav-link" href="calendar.html">
+<i class="fas fa-calendar-alt"></i>
+<span data-translate="calendar">التقويم</span>
+</a>
+<a class="nav-link active" href="statistics.html">
+<i class="fas fa-chart-bar"></i>
+<span data-translate="statistics">الإحصائيات</span>
+</a>
+<a class="nav-link" href="settings.html">
+<i class="fas fa-cog"></i>
+<span data-translate="settings">الإعدادات</span>
+</a>
+</nav>
+<div class="sidebar-footer">
+<div class="dark-mode-toggle">
+<i class="fas fa-moon"></i>
+<span data-translate="dark_mode">الوضع الداكن</span>
+<label class="switch">
+<input id="darkModeToggle" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="main-content">
+<div class="top-bar">
+<div class="welcome-section">
+<h1 data-translate="statistics">الإحصائيات</h1>
+<p class="welcome-message" data-translate="stats_subtitle">تحليل شامل لتقدمك وإنجازاتك</p>
+</div>
+<div class="date-section">
+<i class="fas fa-calendar"></i>
+<span id="currentDate"></span>
+<span id="currentDay"></span>
+</div>
+<div class="top-bar-actions">
+<button aria-label="Change language" class="lang-toggle-btn" id="langToggle">
+<i class="fas fa-globe"></i>
+<span>Türkçe</span>
+</button>
+<button class="mobile-menu-btn" id="mobileMenuBtn">
+<i class="fas fa-bars"></i>
+</button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="stats-overview">
+<div class="overview-card">
+<div class="overview-icon">
+<i class="fas fa-check-circle"></i>
+</div>
+<div class="overview-content">
+<h3 data-translate="total_completions">إجمالي الإنجازات</h3>
+<span class="overview-value" id="totalCompletions">0</span>
+</div>
+</div>
+<div class="overview-card">
+<div class="overview-icon">
+<i class="fas fa-fire"></i>
+</div>
+<div class="overview-content">
+<h3 data-translate="current_streak">السلسلة الحالية</h3>
+<span class="overview-value" id="currentStreak">0 أيام</span>
+</div>
+</div>
+<div class="overview-card">
+<div class="overview-icon">
+<i class="fas fa-trophy"></i>
+</div>
+<div class="overview-content">
+<h3 data-translate="best_streak">أفضل سلسلة</h3>
+<span class="overview-value" id="bestStreak">0 يوم</span>
+</div>
+</div>
+<div class="overview-card">
+<div class="overview-icon">
+<i class="fas fa-percentage"></i>
+</div>
+<div class="overview-content">
+<h3 data-translate="success_rate">معدل النجاح</h3>
+<span class="overview-value" id="successRate">0%</span>
+</div>
+</div>
+</div>
+<!-- Charts Grid -->
+<div class="charts-grid">
+<div class="chart-card large">
+<div class="chart-header">
+<h3 data-translate="monthly_progress">التقدم الشهري</h3>
+<select class="time-filter" id="monthFilter">
+<option data-translate="current_month" value="current">الشهر الحالي</option>
+<option data-translate="last_month" value="last">الشهر الماضي</option>
+<option data-translate="last_3_months" value="3months">آخر 3 أشهر</option>
+</select>
+</div>
+<div class="chart-body">
+<canvas id="monthlyProgressChart"></canvas>
+</div>
+</div>
+<div class="chart-card">
+<div class="chart-header">
+<h3 data-translate="habit_performance">أداء العادات</h3>
+</div>
+<div class="chart-body">
+<canvas id="habitPerformanceChart"></canvas>
+</div>
+</div>
+<div class="chart-card">
+<div class="chart-header">
+<h3 data-translate="category_breakdown">توزيع التصنيفات</h3>
+</div>
+<div class="chart-body">
+<canvas id="categoryBreakdownChart"></canvas>
+</div>
+</div>
+<div class="chart-card">
+<div class="chart-header">
+<h3 data-translate="weekly_comparison">مقارنة أسبوعية</h3>
+</div>
+<div class="chart-body">
+<canvas id="weeklyComparisonChart"></canvas>
+</div>
+</div>
+<div class="chart-card full-width">
+<div class="chart-header">
+<h3 data-translate="activity_heatmap">خريطة النشاط</h3>
+<div class="heatmap-legend">
+<span data-translate="less">أقل</span>
+<div class="legend-colors">
+<span class="color-0"></span>
+<span class="color-1"></span>
+<span class="color-2"></span>
+<span class="color-3"></span>
+<span class="color-4"></span>
+</div>
+<span data-translate="more">أكثر</span>
+</div>
+</div>
+<div class="chart-body">
+<div class="heatmap-container" id="activityHeatmap"></div>
+</div>
+</div>
+</div>
+<!-- Achievements -->
+<div class="achievements-section">
+<h2 data-translate="achievements">الإنجازات</h2>
+<div class="achievements-grid">
+<div class="achievement-card unlocked">
+<div class="achievement-icon">
+<i class="fas fa-fire"></i>
+</div>
+<h4 data-translate="streak_7">سلسلة 7 أيام</h4>
+<p data-translate="streak_7_desc">أكمل عاداتك لمدة 7 أيام متتالية</p>
+</div>
+<div class="achievement-card unlocked">
+<div class="achievement-icon">
+<i class="fas fa-star"></i>
+</div>
+<h4 data-translate="first_habit">أول عادة</h4>
+<p data-translate="first_habit_desc">أنشئ عادتك الأولى</p>
+</div>
+<div class="achievement-card">
+<div class="achievement-icon locked">
+<i class="fas fa-lock"></i>
+</div>
+<h4 data-translate="streak_30">سلسلة 30 يوم</h4>
+<p data-translate="streak_30_desc">أكمل عاداتك لمدة 30 يوم متتالية</p>
+</div>
+<div class="achievement-card">
+<div class="achievement-icon locked">
+<i class="fas fa-lock"></i>
+</div>
+<h4 data-translate="perfect_week">أسبوع مثالي</h4>
+<p data-translate="perfect_week_desc">أكمل جميع عاداتك لأسبوع كامل</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Motivational Quote Modal -->
+<div class="motivational-modal" id="motivationalModal">
+<div class="motivational-overlay"></div>
+<div class="motivational-content">
+<div class="motivational-icon">
+<i class="fas fa-quote-left"></i>
+</div>
+<p class="motivational-quote" id="motivationalQuote"></p>
+<button class="motivational-continue-btn" id="motivationalContinueBtn">
+<span data-translate="motivational_continue">متابعة</span>
+<i class="fas fa-arrow-right"></i>
+</button>
+</div>
+</div>
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/habits.js"></script>
+<script src="js/statistics.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/init.js"></script>
 </body>
 </html>

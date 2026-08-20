@@ -38,7 +38,7 @@ const UI = {
         
         if (dateElement) {
             const lang = Storage.getLanguage() || 'ar';
-            dateElement.textContent = now.toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-US', {
+            dateElement.textContent = now.toLocaleDateString(Translations.locale(lang), {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
@@ -47,7 +47,7 @@ const UI = {
         
         if (dayElement) {
             const lang = Storage.getLanguage() || 'ar';
-            dayElement.textContent = now.toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-US', {
+            dayElement.textContent = now.toLocaleDateString(Translations.locale(lang), {
                 weekday: 'long'
             });
         }
@@ -65,11 +65,11 @@ const UI = {
         
         let greeting;
         if (hour < 12) {
-            greeting = lang === 'ar' ? 'صباح الخير!' : 'Good morning!';
+            greeting = Translations.get('good_morning', lang);
         } else if (hour < 18) {
-            greeting = lang === 'ar' ? 'مساء الخير!' : 'Good afternoon!';
+            greeting = Translations.get('good_afternoon', lang);
         } else {
-            greeting = lang === 'ar' ? 'مساء الخير!' : 'Good evening!';
+            greeting = Translations.get('good_evening', lang);
         }
         
         const session = Storage.getSession();
@@ -200,7 +200,7 @@ const UI = {
         // XP Level
         const xpLevelElement = document.getElementById('xpLevel');
         if (xpLevelElement) {
-            xpLevelElement.textContent = `Level ${stats.level}`;
+            xpLevelElement.textContent = `${Translations.get('level')} ${stats.level}`;
             
             // Update XP progress bar
             const progressFill = document.querySelector('.xp-progress .progress-fill');
@@ -249,7 +249,7 @@ const UI = {
             const month = date.getMonth();
             const lang = Storage.getLanguage() || 'ar';
             
-            calendarTitle.textContent = date.toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-US', {
+            calendarTitle.textContent = date.toLocaleDateString(Translations.locale(lang), {
                 month: 'long',
                 year: 'numeric'
             });
@@ -324,7 +324,7 @@ const UI = {
         
         const lang = Storage.getLanguage() || 'ar';
         const date = new Date(dateStr);
-        selectedDateElement.textContent = date.toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-US', {
+        selectedDateElement.textContent = date.toLocaleDateString(Translations.locale(lang), {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -341,7 +341,7 @@ const UI = {
         
         if (dayHabitsElement) {
             if (completedHabits.length === 0) {
-                dayHabitsElement.innerHTML = '<p class="text-center text-secondary">لا توجد عادات مكتملة في هذا اليوم</p>';
+                dayHabitsElement.innerHTML = `<p class="text-center text-secondary">${Translations.get('no_completed_habits')}</p>`;
             } else {
                 dayHabitsElement.innerHTML = completedHabits.map(h => `
                     <div class="habit-item completed">
@@ -377,7 +377,7 @@ const UI = {
         // Update title with date
         const lang = Storage.getLanguage() || 'ar';
         const date = new Date(dateStr);
-        eventsModalTitle.textContent = date.toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-US', {
+        eventsModalTitle.textContent = date.toLocaleDateString(Translations.locale(lang), {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -405,7 +405,7 @@ const UI = {
         const events = Storage.getEventsByDate(dateStr);
         
         if (events.length === 0) {
-            eventsList.innerHTML = '<p class="text-center text-secondary">لا توجد أحداث في هذا اليوم</p>';
+            eventsList.innerHTML = `<p class="text-center text-secondary">${Translations.get('no_events')}</p>`;
             return;
         }
         
@@ -418,7 +418,7 @@ const UI = {
                     <div class="event-title">${AppUtils.escapeHtml(event.title)}</div>
                     <div class="event-meta">
                         ${event.time ? `<span class="event-time"><i class="fas fa-clock"></i> ${AppUtils.escapeHtml(event.time)}</span>` : ''}
-                        <span class="event-type">${event.type === 'reminder' ? 'تذكير' : 'حدث'}</span>
+                        <span class="event-type">${Translations.get(event.type === 'reminder' ? 'reminder' : 'event')}</span>
                     </div>
                     ${event.description ? `<div class="event-description">${AppUtils.escapeHtml(event.description)}</div>` : ''}
                 </div>
@@ -455,7 +455,7 @@ const UI = {
             const event = events.find(e => e.id === eventId);
             
             if (event) {
-                eventFormTitle.textContent = 'تعديل الحدث';
+                eventFormTitle.textContent = Translations.get('edit_event');
                 document.getElementById('eventTitle').value = event.title;
                 document.getElementById('eventDescription').value = event.description || '';
                 document.getElementById('eventTime').value = event.time || '';
@@ -463,7 +463,7 @@ const UI = {
             }
         } else {
             // Add mode
-            eventFormTitle.textContent = 'إضافة حدث جديد';
+            eventFormTitle.textContent = Translations.get('add_event');
         }
         
         eventFormModal.classList.add('active');
@@ -505,7 +505,7 @@ const UI = {
         if (editId) {
             // Update existing event
             Storage.updateEvent(editId, eventData);
-            this.showToast('تم تحديث الحدث بنجاح');
+            this.showToast(Translations.get('event_updated'));
         } else {
             // Add new event
             const newEvent = {
@@ -514,7 +514,7 @@ const UI = {
                 ...eventData
             };
             Storage.addEvent(newEvent);
-            this.showToast('تم إضافة الحدث بنجاح');
+            this.showToast(Translations.get('event_added'));
         }
         
         // Refresh events list
@@ -540,7 +540,7 @@ const UI = {
      * @param {string} eventId - Event ID
      */
     deleteEvent(eventId) {
-        if (confirm('هل أنت متأكد من حذف هذا الحدث؟')) {
+        if (confirm(Translations.get('confirm_delete_event'))) {
             Storage.deleteEvent(eventId);
             
             const eventsModal = document.getElementById('eventsModal');
@@ -553,7 +553,7 @@ const UI = {
             // Refresh calendar to remove event indicator
             this.initCalendar();
             
-            this.showToast('تم حذف الحدث بنجاح');
+            this.showToast(Translations.get('event_deleted'));
         }
     },
 
@@ -638,10 +638,10 @@ const UI = {
         if (langToggle) {
             langToggle.addEventListener('click', () => {
                 const currentLang = Storage.getLanguage() || 'ar';
-                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                const languages = ['ar', 'tr', 'en'];
+                const newLang = languages[(languages.indexOf(currentLang) + 1) % languages.length];
                 Translations.setLanguage(newLang);
-                this.updateDate();
-                this.updateWelcomeMessage();
+                window.location.reload();
             });
         }
     },
@@ -731,7 +731,7 @@ const UI = {
                     
                     document.getElementById('currentUsername').textContent = newUsername;
                     editUsernameModal.classList.remove('active');
-                    this.showToast('تم تحديث اسم المستخدم بنجاح');
+                    this.showToast(Translations.get('username_updated'));
                 }
             });
         }
@@ -773,7 +773,7 @@ const UI = {
                     document.getElementById('currentEmail').textContent = newEmail;
                     editEmailModal.classList.remove('active');
                     editEmailForm.reset();
-                    this.showToast('تم تحديث البريد الإلكتروني بنجاح');
+                    this.showToast(Translations.get('email_updated'));
                 }
             });
         }
@@ -785,6 +785,7 @@ const UI = {
             languageSetting.value = Storage.getLanguage() || 'ar';
             languageSetting.addEventListener('change', (e) => {
                 Translations.setLanguage(e.target.value);
+                window.location.reload();
             });
         }
         
@@ -825,7 +826,7 @@ const UI = {
             a.download = `watfa-habit-tracker-backup_${AppUtils.localDateKey()}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            this.showToast('تم إنشاء نسخة احتياطية JSON');
+            this.showToast(Translations.get('backup_created'));
         });
 
         importJSONBtn?.addEventListener('click', () => importJSONFile?.click());
@@ -833,19 +834,19 @@ const UI = {
             const file = event.target.files?.[0];
             if (!file) return;
             if (file.size > 5 * 1024 * 1024) {
-                this.showToast('ملف النسخة الاحتياطية أكبر من 5MB', 'error');
+                this.showToast(Translations.get('backup_too_large'), 'error');
                 event.target.value = '';
                 return;
             }
             try {
                 const snapshot = JSON.parse(await file.text());
-                if (!confirm('استيراد النسخة سيستبدل البيانات المحلية الحالية. متابعة؟')) return;
+                if (!confirm(Translations.get('confirm_import_backup'))) return;
                 Storage.importSnapshot(snapshot);
-                this.showToast('تم استيراد النسخة الاحتياطية');
+                this.showToast(Translations.get('backup_imported'));
                 setTimeout(() => window.location.reload(), 250);
             } catch (error) {
                 console.error('Backup import failed:', error);
-                this.showToast('ملف النسخة الاحتياطية غير صالح', 'error');
+                this.showToast(Translations.get('backup_invalid'), 'error');
             } finally {
                 event.target.value = '';
             }
@@ -855,10 +856,10 @@ const UI = {
         const deleteAccountBtn = document.getElementById('deleteAccountBtn');
         if (deleteAccountBtn) {
             deleteAccountBtn.addEventListener('click', () => {
-                if (confirm('هل أنت متأكد من حذف جميع البيانات المحلية؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                if (confirm(Translations.get('confirm_delete_local'))) {
                     Storage.clear();
                     Storage.initializeLocalProfile();
-                    this.showToast('تم حذف البيانات المحلية');
+                    this.showToast(Translations.get('local_data_deleted'));
                     setTimeout(() => window.location.reload(), 250);
                 }
             });
@@ -872,7 +873,7 @@ const UI = {
         const habits = Habits.getAll();
         const session = Storage.getSession();
         
-        let csv = 'Name,Description,Category,Frequency,Streak,Best Streak,Completed Dates\n';
+        let csv = [Translations.get('csv_name'), Translations.get('csv_description'), Translations.get('csv_category'), Translations.get('csv_frequency'), Translations.get('csv_streak'), Translations.get('csv_best_streak'), Translations.get('csv_completed_dates')].map(AppUtils.csvCell).join(',') + '\n';
         habits.forEach(habit => {
             csv += [
                 habit.name, habit.description, habit.category, habit.frequency,
@@ -888,7 +889,7 @@ const UI = {
         a.click();
         window.URL.revokeObjectURL(url);
         
-        this.showToast('تم تصدير البيانات بنجاح');
+        this.showToast(Translations.get('data_exported'));
     },
 
     /**
@@ -903,18 +904,18 @@ const UI = {
             } else if (window.jsPDF) {
                 jsPDFConstructor = window.jsPDF;
             } else {
-                this.showToast('PDF library not loaded. Please refresh the page.');
+                this.showToast(Translations.get('pdf_library_missing'), 'error');
                 return;
             }
 
             if (!jsPDFConstructor) {
-                this.showToast('PDF library not available. Please refresh the page.');
+                this.showToast(Translations.get('pdf_library_missing'), 'error');
                 return;
             }
 
             const session = Storage.getSession();
             if (!session) {
-                this.showToast('Local profile is unavailable. Please refresh the page.');
+                this.showToast(Translations.get('local_profile_unavailable'), 'error');
                 return;
             }
 
@@ -941,20 +942,20 @@ const UI = {
             // Title
             doc.setFontSize(24);
             doc.setTextColor(108, 99, 255);
-            doc.text('Watfa Habit Tracker Report', margin, yPos);
+            doc.text(Translations.get('pdf_report_title'), margin, yPos);
             yPos += 15;
 
             // Export date
             doc.setFontSize(12);
             doc.setTextColor(100, 100, 100);
-            const exportDate = new Date().toLocaleDateString(isRTL ? 'ar-EG' : 'en-US', {
+            const exportDate = new Date().toLocaleDateString(Translations.locale(lang), {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
             });
-            doc.text(`Export Date: ${exportDate}`, margin, yPos);
+            doc.text(`${Translations.get('export_date')}: ${exportDate}`, margin, yPos);
             yPos += 15;
 
             doc.setTextColor(0, 0, 0);
@@ -962,7 +963,7 @@ const UI = {
             // User Summary Section
             doc.setFontSize(16);
             doc.setTextColor(108, 99, 255);
-            doc.text('User Summary', margin, yPos);
+            doc.text(Translations.get('user_summary'), margin, yPos);
             yPos += 10;
 
             doc.setFontSize(11);
@@ -976,14 +977,14 @@ const UI = {
 
             // Simple text rendering for summary
             const summaryData = [
-                `Total Active Habits: ${habits.length}`,
-                `Total Completed Habits: ${totalCompletions}`,
-                `Current Streak: ${currentStreak} days`,
-                `Longest Streak: ${bestStreak} days`,
-                `Commitment Percentage: ${successRate}%`,
-                `XP Level: ${stats.level}`,
-                `XP Progress: ${stats.xp}`,
-                `Monthly Active Days: ${activeDaysThisMonth}`
+                `${Translations.get('total_active_habits')}: ${habits.length}`,
+                `${Translations.get('total_completed_habits')}: ${totalCompletions}`,
+                `${Translations.get('current_streak')}: ${currentStreak} ${Translations.get('days')}`,
+                `${Translations.get('longest_streak')}: ${bestStreak} ${Translations.get('days')}`,
+                `${Translations.get('commitment_percentage')}: ${successRate}%`,
+                `${Translations.get('xp_level')}: ${stats.level}`,
+                `${Translations.get('xp_progress')}: ${stats.xp}`,
+                `${Translations.get('monthly_active_days')}: ${activeDaysThisMonth}`
             ];
 
             summaryData.forEach(line => {
@@ -995,7 +996,7 @@ const UI = {
             // Habits List Section
             doc.setFontSize(16);
             doc.setTextColor(108, 99, 255);
-            doc.text('Habits List', margin, yPos);
+            doc.text(Translations.get('habits_list'), margin, yPos);
             yPos += 10;
 
             doc.setFontSize(10);
@@ -1007,7 +1008,7 @@ const UI = {
                 const missedDays = Math.max(0, expectedCompletions - habit.completedDates.length);
                 const completionRate = expectedCompletions > 0 ? Math.round((habit.completedDates.length / expectedCompletions) * 100) : 0;
 
-                const habitLine = `${habit.name} (${habit.category}) - ${habit.active ? 'Active' : 'Inactive'} - ${completionRate}% complete - ${habit.completedDates.length} days completed - ${missedDays} missed`;
+                const habitLine = `${habit.name} (${Translations.get(habit.category)}) - ${Translations.get(habit.active ? 'active' : 'inactive')} - ${completionRate}% ${Translations.get('complete_label')} - ${habit.completedDates.length} ${Translations.get('days_completed')} - ${missedDays} ${Translations.get('missed')}`;
                 const wrapped = doc.splitTextToSize(habitLine, contentWidth);
                 wrapped.forEach(textLine => {
                     doc.text(textLine, margin, yPos);
@@ -1026,10 +1027,10 @@ const UI = {
             const fileName = `watfa-habits_${AppUtils.localDateKey()}.pdf`;
             doc.save(fileName);
 
-            this.showToast('تم تصدير PDF بنجاح');
+            this.showToast(Translations.get('pdf_exported'));
         } catch (error) {
             console.error('Error exporting PDF:', error);
-            this.showToast('Error exporting PDF. Please try again.');
+            this.showToast(Translations.get('pdf_export_error'), 'error');
         }
     },
 
@@ -1041,36 +1042,20 @@ const UI = {
      * @returns {string} Performance summary
      */
     generatePerformanceSummary(habits, stats, overallCompletion) {
-        let summary = '';
-        
-        summary += `You are tracking ${habits.length} habit${habits.length !== 1 ? 's' : ''}. `;
-        
-        if (overallCompletion >= 80) {
-            summary += 'Your overall performance is excellent! You are consistently completing your habits. ';
-        } else if (overallCompletion >= 60) {
-            summary += 'Your overall performance is good. Keep up the momentum to reach your goals. ';
-        } else if (overallCompletion >= 40) {
-            summary += 'Your performance is moderate. Consider adjusting your habits or setting more realistic goals. ';
-        } else {
-            summary += 'Your performance needs improvement. Try to focus on building consistency with your habits. ';
-        }
-        
-        summary += `You have earned ${stats.xp} XP and reached level ${stats.level}. `;
-        
+        let summary = Translations.format('tracking_summary', { count: habits.length });
+        if (overallCompletion >= 80) summary += Translations.get('performance_excellent');
+        else if (overallCompletion >= 60) summary += Translations.get('performance_good');
+        else if (overallCompletion >= 40) summary += Translations.get('performance_moderate');
+        else summary += Translations.get('performance_needs_work');
+
+        summary += Translations.format('xp_summary', { xp: stats.xp, level: stats.level });
         const currentStreak = Statistics.getCurrentStreak();
-        if (currentStreak > 0) {
-            summary += `You are on a ${currentStreak}-day streak. Keep it going! `;
-        } else {
-            summary += 'Start building your streak by completing habits daily. ';
-        }
-        
+        summary += currentStreak > 0
+            ? Translations.format('streak_summary', { count: currentStreak })
+            : Translations.get('streak_start');
         const bestStreak = Statistics.getBestStreak();
-        if (bestStreak > 0) {
-            summary += `Your best streak was ${bestStreak} days. `;
-        }
-        
-        summary += 'Continue tracking your habits to achieve your goals and build lasting positive habits.';
-        
+        if (bestStreak > 0) summary += Translations.format('best_streak_summary', { count: bestStreak });
+        summary += Translations.get('performance_closing');
         return summary;
     },
 

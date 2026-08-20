@@ -132,7 +132,7 @@ const Storage = {
 
     getLanguage() { return this.get(this.KEYS.LANGUAGE) || this.getSettings().language || 'ar'; },
     setLanguage(language) {
-        const value = language === 'en' ? 'en' : 'ar';
+        const value = ['ar', 'tr', 'en'].includes(language) ? language : 'ar';
         this.set(this.KEYS.LANGUAGE, value);
         const settings = this.getSettings(); settings.language = value; this.setSettings(settings);
         return true;

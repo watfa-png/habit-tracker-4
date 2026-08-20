@@ -160,3 +160,7 @@ These are architectural boundaries, not hidden bugs:
 ## Recommended next major version
 
 If Watfa later wants shared accounts, multi-device sync, teams, or real admin controls, that should be a deliberate v3 backend project rather than reintroducing localStorage authentication. Recommended direction: a small API plus PostgreSQL/Supabase with server-enforced authorization, migrations, rate limiting, CSRF/session strategy, and end-to-end tests.
+
+## v2.1.0 localization follow-up
+
+The application now ships with complete UI localization for Arabic (RTL), Turkish (LTR), and English (LTR), including dynamic dates, calendar/event UI, statistics text, settings, notifications, CSV headers, PDF labels, empty states, and motivational quotes. Translation-key parity is enforced by the dependency-free smoke test.

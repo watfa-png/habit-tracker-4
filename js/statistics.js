@@ -357,15 +357,13 @@ const Statistics = {
 
         const currentStreakEl = document.getElementById('currentStreak');
         if (currentStreakEl) {
-            const lang = Storage.getLanguage() || 'ar';
-            const dayText = lang === 'ar' ? 'أيام' : 'days';
+            const dayText = Translations.get('days');
             currentStreakEl.textContent = `${currentStreak} ${dayText}`;
         }
 
         const bestStreakEl = document.getElementById('bestStreak');
         if (bestStreakEl) {
-            const lang = Storage.getLanguage() || 'ar';
-            const dayText = lang === 'ar' ? 'يوم' : 'day';
+            const dayText = Translations.get('days');
             bestStreakEl.textContent = `${bestStreak} ${dayText}`;
         }
 
@@ -456,8 +454,8 @@ const Statistics = {
             chartsGrid.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-chart-line"></i>
-                    <h3>${Translations.get('no_stats_data') || 'لا توجد بيانات إحصائية'}</h3>
-                    <p>${Translations.get('no_stats_desc') || 'ابدأ بإكمال عاداتك لرؤية الإحصائيات'}</p>
+                    <h3>${Translations.get('no_stats_data')}</h3>
+                    <p>${Translations.get('no_stats_desc')}</p>
                 </div>
             `;
         }
@@ -472,15 +470,13 @@ const Statistics = {
 
         const currentStreakEl = document.getElementById('currentStreak');
         if (currentStreakEl) {
-            const lang = Storage.getLanguage() || 'ar';
-            const dayText = lang === 'ar' ? 'أيام' : 'days';
+            const dayText = Translations.get('days');
             currentStreakEl.textContent = `0 ${dayText}`;
         }
 
         const bestStreakEl = document.getElementById('bestStreak');
         if (bestStreakEl) {
-            const lang = Storage.getLanguage() || 'ar';
-            const dayText = lang === 'ar' ? 'يوم' : 'day';
+            const dayText = Translations.get('days');
             bestStreakEl.textContent = `0 ${dayText}`;
         }
 

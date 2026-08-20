@@ -222,7 +222,7 @@ const Charts = {
         for (let i = 6; i >= 0; i--) {
             const date = new Date();
             date.setDate(date.getDate() - i);
-            labels.push(date.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' }));
+            labels.push(date.toLocaleDateString(Translations.locale(), { day: 'numeric', month: 'short' }));
             // Use real completion count from statistics
             data.push(dailyData[6 - i]?.completionCount || 0);
         }
@@ -412,7 +412,7 @@ const Charts = {
         const habits = Habits.getAll();
         if (habits.length === 0) {
             // Show empty state
-            ctx.parentElement.innerHTML = '<p class="text-center text-secondary">لا توجد عادات</p>';
+            ctx.parentElement.innerHTML = `<p class="text-center text-secondary">${Translations.get('no_habits_short')}</p>`;
             return;
         }
 
@@ -462,7 +462,7 @@ const Charts = {
         const habits = Habits.getAll();
         if (habits.length === 0) {
             // Show empty state
-            ctx.parentElement.innerHTML = '<p class="text-center text-secondary">لا توجد عادات</p>';
+            ctx.parentElement.innerHTML = `<p class="text-center text-secondary">${Translations.get('no_habits_short')}</p>`;
             return;
         }
 
@@ -505,7 +505,7 @@ const Charts = {
         
         if (habits.length === 0) {
             // Show empty state
-            ctx.parentElement.innerHTML = '<p class="text-center text-secondary">لا توجد عادات</p>';
+            ctx.parentElement.innerHTML = `<p class="text-center text-secondary">${Translations.get('no_habits_short')}</p>`;
             return;
         }
 
@@ -560,7 +560,7 @@ const Charts = {
         const habits = Habits.getAll();
         if (habits.length === 0) {
             // Show empty state
-            container.innerHTML = '<p class="text-center text-secondary">لا توجد بيانات نشاط</p>';
+            container.innerHTML = `<p class="text-center text-secondary">${Translations.get('no_activity_data')}</p>`;
             return;
         }
 
@@ -568,7 +568,7 @@ const Charts = {
         
         let html = '';
         heatmapData.forEach(data => {
-            html += `<div class="heatmap-cell level-${data.level}" title="${data.date}: ${data.completionCount} completions"></div>`;
+            html += `<div class="heatmap-cell level-${data.level}" title="${data.date}: ${data.completionCount} ${Translations.get('completions')}"></div>`;
         });
         
         container.innerHTML = html;

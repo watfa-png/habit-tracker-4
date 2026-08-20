@@ -968,7 +968,7 @@ const Habits = {
 
                 // Show toast
 
-                UI.showToast(editId ? 'تم تحديث العادة' : 'تم إضافة العادة');
+                UI.showToast(Translations.get(editId ? 'habit_updated' : 'habit_added'));
 
             });
 

@@ -35,6 +35,32 @@ function load(file) {
 load('js/utils.js');
 load('js/storage.js');
 vm.runInContext('Storage.initializeLocalProfile()', context);
+load('js/translations.js');
+assert.strictEqual(vm.runInContext("Translations.get('dashboard', 'ar')", context), 'لوحة التحكم');
+assert.strictEqual(vm.runInContext("Translations.get('dashboard', 'tr')", context), 'Kontrol Paneli');
+assert.strictEqual(vm.runInContext("Translations.get('dashboard', 'en')", context), 'Dashboard');
+vm.runInContext("Storage.setLanguage('tr')", context);
+assert.strictEqual(vm.runInContext('Storage.getLanguage()', context), 'tr');
+assert.strictEqual(vm.runInContext("Translations.locale('tr')", context), 'tr-TR');
+const translationParity = vm.runInContext(`(() => {
+  const sets = ['ar','tr','en'].map(lang => Object.keys(Translations.translations[lang]).sort().join('|'));
+  return sets.every(x => x === sets[0]);
+})()`, context);
+assert.strictEqual(translationParity, true);
+
+for (const htmlFile of ['index.html','dashboard.html','calendar.html','statistics.html','settings.html']) {
+  const html = fs.readFileSync(htmlFile, 'utf8');
+  const referenced = [
+    ...html.matchAll(/data-translate=\"([^\"]+)\"/g),
+    ...html.matchAll(/data-translate-placeholder=\"([^\"]+)\"/g)
+  ].map(match => match[1]);
+  for (const key of referenced) {
+    for (const lang of ['ar','tr','en']) {
+      assert.ok(vm.runInContext(`Object.prototype.hasOwnProperty.call(Translations.translations['${lang}'], '${key}')`, context), `${htmlFile}: missing ${key} in ${lang}`);
+    }
+  }
+}
+
 
 assert.strictEqual(vm.runInContext('Storage.getSession().role', context), 'local');
 assert.strictEqual(vm.runInContext('Storage.getHabits().length', context), 0);

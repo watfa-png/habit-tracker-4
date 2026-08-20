@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.0 - 2026-08-20
+
+### Added
+- Added complete Turkish (`tr-TR`) interface localization alongside Arabic and English.
+- Added Turkish motivational quotes, date/month formatting, event labels, settings, exports, empty states, and runtime notifications.
+- Added translation parity checks to the smoke test so Arabic, Turkish, and English keep the same key set.
+
+### Changed
+- Language switching now cycles Arabic → Turkish → English and preserves the selected language locally.
+- Document titles, form placeholders, calendar dates, chart dates, CSV headers, and PDF report labels now follow the selected language.
+- Settings language selector now includes العربية, Türkçe, and English.
+
 ## 2.0.0 - 2026-08-20
 
 ### Changed

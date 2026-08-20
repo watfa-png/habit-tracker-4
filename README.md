@@ -1,13 +1,14 @@
 # Watfa Habit Tracker
 
-A lightweight, local-first, bilingual habit tracker maintained by **Watfa**. It runs as a static web application, stores personal data in the browser, and does not require an account, backend, or database.
+A lightweight, local-first, trilingual habit tracker maintained by **Watfa**. It runs as a static web application, stores personal data in the browser, and does not require an account, backend, or database.
 
 ## Features
+
+- 🌐 Full interface localization: العربية (RTL), Türkçe, English (LTR)
 
 - Daily and weekly habits with streak tracking
 - Dashboard and interactive statistics
 - Calendar events and activity history
-- Arabic (RTL) and English (LTR)
 - Light and dark themes
 - CSV and PDF export
 - XP and level progression
@@ -43,7 +44,7 @@ node tests/smoke.test.js
 node --check js/*.js
 ```
 
-For releases, also perform a browser smoke test on the landing page, dashboard, statistics, calendar, and settings in both Arabic and English and at mobile and desktop widths.
+For releases, also perform a browser smoke test on the landing page, dashboard, statistics, calendar, and settings in Arabic, Turkish, and English and at mobile and desktop widths.
 
 ## Deployment
 
